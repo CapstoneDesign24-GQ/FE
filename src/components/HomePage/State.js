@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useAsyncError } from 'react-router-dom';
 import styled from 'styled-components';
 import Worm from '../../assets/images/wormRightTop.png';
-import StateData from '../../db/State.json';
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -88,6 +87,22 @@ const Body = styled.div`
     width: ${({ theme }) => theme.icons.componentLeft};
     height: ${({ theme }) => theme.icons.componentLeft};
   }
+
+    .slick-prev{
+    width: 30px;
+    height: 30px;
+    color: #ffffff;
+    left: -6px;
+    }
+    .slick-next{
+    width: 30px;
+    height: 30px; 
+    color: #ffffff;
+    right: -6px;
+    }
+    .slick-dots li button:before{
+    color: white
+    }
 `;
 const SlideContainer = styled.div`
   display: flex !important;
@@ -158,7 +173,7 @@ const GotoDetail = styled.button`
   flex-direction: row;
 
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 5px;
 
@@ -176,6 +191,10 @@ const GotoDetail = styled.button`
 
   font-size: ${({ theme }) => theme.fonts.stateButton};
   font-weight: ${({ theme }) => theme.fontsWeights.stateButton};
+
+  .icon{
+    margin: 0;
+  }
 `;
 
 export default State;
@@ -188,86 +207,88 @@ const iconMap = {
   };
   
 
-function State({selectedCrop}) {
+function State({selectedCrop, nowData, setNowData}) {
   const [state, setState] = useState('');
   const [stateIcon, setStateIcon] = useState(null);
-  const statePercent = parseInt(StateData.percent);
+//   const selectedCrop.percent = parseInt(selectedCrop.percent);
 
   useEffect(() => {
     let newState = '';
-    if (statePercent > 74 && statePercent < 101) {
+    if (selectedCrop.percent > 74 && selectedCrop.percent < 101) {
       newState = '위험해요!';
-    } else if (statePercent > 49 && statePercent < 75) {
+    } else if (selectedCrop.percent > 49 && selectedCrop.percent < 75) {
       newState = '주의가 필요해요!';
-    } else if (statePercent > 24 && statePercent < 50) {
+    } else if (selectedCrop.percent > 24 && selectedCrop.percent < 50) {
       newState = '조심해볼까요?';
-    } else if (statePercent > 0 && statePercent < 25) {
+    } else if (selectedCrop.percent > 0 && selectedCrop.percent < 25) {
       newState = '괜찮아요!';
     }
     setState(newState);
     setStateIcon(iconMap[newState]);
-  }, [statePercent]);
+  }, [selectedCrop, nowData]);
 
   // selectedCrop 변경 시, 호출 할 함수 
-  useEffect( () => {
-    const fetchStateInfo = async () => {
-      try{
-        const stateData = await getStateInfo();
-        console.log("state 데이터:", stateData)
-      } catch (error) {
-        console.log("앨범 정보를 가져오는 데 실패했습니다:", error);
-      } 
-    };
-  }, [selectedCrop])
+//   useEffect( () => {
+//     const fetchStateInfo = async () => {
+//       try{
+//         result = await getStateInfo();
+//         setStateDate(result);
+//         console.log("state 데이터:", selectedCrop)
+//       } catch (error) {
+//         console.log("앨범 정보를 가져오는 데 실패했습니다:", error);
+//       } 
+//     };
+//   }, [selectedCrop])
 
-  const IconComponent = stateIcon;
+//   const IconComponent = stateIcon;
   //캐러셀 구현
-  const settings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    nextArrow: <BsCaretRightFill />,
-    prevArrow: <BsCaretLeftFill />,
-  };
+//   const settings = {
+//     dots: true,
+//     infinite: false,
+//     speed: 500,
+//     slidesToShow: 1,
+//     slidesToScroll: 1,
+//     nextArrow: <BsCaretRightFill />,
+//     prevArrow: <BsCaretLeftFill />,
+//   };
+  
   return (
     <>
-      <Container style={{ backgroundColor: getBackgroundColor(statePercent) }}>
+      <Container style={{ backgroundColor: getBackgroundColor(selectedCrop.percent) }}>
         <Header>
           <BsFillExclamationTriangleFill className='icon' />
           <p>경보</p>
         </Header>
         <Body>
-          <Slider {...settings}>
+          {/* <Slider {...settings}> */}
             <SlideContainer>
-                <BsCaretLeftFill className='arrowIcon' />
+                <BsCaretLeftFill onClick={() => setNowData((nowData-1)%6)} className='arrowIcon' />
                     <StateBody>
                         {stateIcon && state === '위험해요!' && <BsFillEmojiDizzyFill className='stateIcon' />}
                         {stateIcon && state === '주의가 필요해요!' && <BsFillEmojiAngryFill className='stateIcon' />}
                         {stateIcon && state === '조심해볼까요?' && <BsFillEmojiNeutralFill className='stateIcon' />}
                         {stateIcon && state === '괜찮아요!' && <BsFillEmojiSmileFill className='stateIcon' />}
                         <StateBodyText>
-                        <p className='percent' value={StateData.percent}>
-                            {StateData.percent} %
+                        <p className='percent' value={selectedCrop.percent}>
+                            {selectedCrop.percent} %
                         </p>
                         <p className='state' value={state}>
                             {state}
                         </p>
-                        <p className='pestName' value={StateData.pestName}>
-                            {StateData.pestName}
+                        <p className='pestName' value={selectedCrop.pestName}>
+                            {selectedCrop.pestName}
                         </p>
                         </StateBodyText>
                         <Link to='/detail'>
-                        <GotoDetail style={{ color: getBackgroundColor(statePercent) }}>
-                            <BsArrowRightCircleFill />
+                        <GotoDetail style={{ color: getBackgroundColor(selectedCrop.percent) }}>
+                            <BsArrowRightCircleFill className='icon'/>
                             확인하기
                         </GotoDetail>
                         </Link>
                     </StateBody>
-                    <BsCaretRightFill className='arrowIcon' />
+                    <BsCaretRightFill onClick={() => setNowData((nowData+1)%6)} className='arrowIcon' />
             </SlideContainer>
-          </Slider>
+          {/* </Slider> */}
         </Body>
       </Container>
     </>
