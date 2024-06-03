@@ -207,38 +207,38 @@ const iconMap = {
   };
   
 
-function State({selectedCrop, nowData, setNowData}) {
+function State({stateData, nowData, setNowData}) {
   const [state, setState] = useState('');
   const [stateIcon, setStateIcon] = useState(null);
-//   const selectedCrop.percent = parseInt(selectedCrop.percent);
+//   const stateData.percent = parseInt(stateData.percent);
 
   useEffect(() => {
     let newState = '';
-    if (selectedCrop.percent > 74 && selectedCrop.percent < 101) {
+    if (stateData.percent > 74 && stateData.percent < 101) {
       newState = '위험해요!';
-    } else if (selectedCrop.percent > 49 && selectedCrop.percent < 75) {
+    } else if (stateData.percent > 49 && stateData.percent < 75) {
       newState = '주의가 필요해요!';
-    } else if (selectedCrop.percent > 24 && selectedCrop.percent < 50) {
+    } else if (stateData.percent > 24 && stateData.percent < 50) {
       newState = '조심해볼까요?';
-    } else if (selectedCrop.percent > 0 && selectedCrop.percent < 25) {
+    } else if (stateData.percent > 0 && stateData.percent < 25) {
       newState = '괜찮아요!';
     }
     setState(newState);
     setStateIcon(iconMap[newState]);
-  }, [selectedCrop, nowData]);
+  }, [stateData, nowData]);
 
-  // selectedCrop 변경 시, 호출 할 함수 
+  // stateData 변경 시, 호출 할 함수 
 //   useEffect( () => {
 //     const fetchStateInfo = async () => {
 //       try{
 //         result = await getStateInfo();
 //         setStateDate(result);
-//         console.log("state 데이터:", selectedCrop)
+//         console.log("state 데이터:", stateData)
 //       } catch (error) {
 //         console.log("앨범 정보를 가져오는 데 실패했습니다:", error);
 //       } 
 //     };
-//   }, [selectedCrop])
+//   }, [stateData])
 
 //   const IconComponent = stateIcon;
   //캐러셀 구현
@@ -254,7 +254,7 @@ function State({selectedCrop, nowData, setNowData}) {
   
   return (
     <>
-      <Container style={{ backgroundColor: getBackgroundColor(selectedCrop.percent) }}>
+      <Container style={{ backgroundColor: getBackgroundColor(stateData.percent) }}>
         <Header>
           <BsFillExclamationTriangleFill className='icon' />
           <p>경보</p>
@@ -269,18 +269,18 @@ function State({selectedCrop, nowData, setNowData}) {
                         {stateIcon && state === '조심해볼까요?' && <BsFillEmojiNeutralFill className='stateIcon' />}
                         {stateIcon && state === '괜찮아요!' && <BsFillEmojiSmileFill className='stateIcon' />}
                         <StateBodyText>
-                        <p className='percent' value={selectedCrop.percent}>
-                            {selectedCrop.percent} %
+                        <p className='percent' value={stateData.percent}>
+                            {stateData.percent} %
                         </p>
                         <p className='state' value={state}>
                             {state}
                         </p>
-                        <p className='pestName' value={selectedCrop.pestName}>
-                            {selectedCrop.pestName}
+                        <p className='pestName' value={stateData.pestName}>
+                            {stateData.pestName}
                         </p>
                         </StateBodyText>
                         <Link to='/detail'>
-                        <GotoDetail style={{ color: getBackgroundColor(selectedCrop.percent) }}>
+                        <GotoDetail style={{ color: getBackgroundColor(stateData.percent) }}>
                             <BsArrowRightCircleFill className='icon'/>
                             확인하기
                         </GotoDetail>

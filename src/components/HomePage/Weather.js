@@ -72,7 +72,7 @@ const WeatherBox = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 96px;
-  width: 86px;
+  width: 92px;
 
   .weatherIcon {
     margin: 0;

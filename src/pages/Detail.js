@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import { useNavigate } from 'react-router-dom'
+import { json, useNavigate } from 'react-router-dom'
 import styled from 'styled-components';
 
 import PestInformation from '../components/DetailPage/PestInformation';
@@ -88,11 +88,13 @@ gap: 30px;
 width: 100%;
 `;
 
-function Detail({ pestName, selectedCrop }) { // props로 pestName과 selectedCrop을 받아옴
+function Detail() { // props로 pestName과 selectedCrop을 받아옴
   const navigate = useNavigate();
   
   // API 호출 함수
   const fetchPestInfo = async () => {
+    const pestName = localStorage.getItem("pestName");
+    const selectedCrop = JSON.parse(localStorage.getItem("inputData")).crop;
     try {
       const pestData = await postPestInfo(pestName, selectedCrop); // props로 받아온 값 사용
       console.log("해충 데이터:", pestData); 

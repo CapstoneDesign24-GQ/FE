@@ -122,9 +122,11 @@ const Main = () => {
 
   const handleConfirmClick = async () => {
     try {
-      const response = await postSelect(inputData.location, inputData.crop, inputData.date); // postSelect 함수 호출
-      console.log("선택된 값들을 API에 전달:", response);
-      navigate('/home')
+      // const response = await postSelect(inputData.location, inputData.crop, inputData.date); // postSelect 함수 호출
+      // console.log("선택된 값들을 API에 전달:", response);
+      localStorage.setItem("inputData",JSON.stringify(inputData));
+      console.log(inputData);
+      navigate('/home');
       
     } catch (error) {
       alert('지역/작물/날짜가 선택되지 않았습니다.');

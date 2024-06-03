@@ -246,6 +246,9 @@ function Header({selectedCrop, setSelectedCrop}) {
     // 임시 선택을 실제 선택으로 적용
     setSelectedLocation(tempSelectedLocation);
     setSelectedCrop(tempSelectedCrop);
+    const inputDataBefore = JSON.parse(localStorage.getItem("inputData"));
+    inputDataBefore.crop = selectedCrop;
+    localStorage.setItem("inputData",JSON.stringify(inputDataBefore));
     setIsSearchToggled(false); // 모달 닫기
   };
   // const applyChanges = async () => {

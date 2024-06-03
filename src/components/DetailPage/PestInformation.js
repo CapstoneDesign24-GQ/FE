@@ -230,7 +230,7 @@ function PestInformation() {
               </TextBox>
               <PestImgContainer2>
                 <PestImgContainer>
-                  <PestImage src="/images/5/PestEgg.png"/>
+                  <PestImage src="/images/4/PestEgg.png"/>
                 </PestImgContainer>
               </PestImgContainer2>
 
@@ -239,7 +239,7 @@ function PestInformation() {
               </TextBox>
               <PestImgContainer2>
                 <PestImgContainer>
-                  <PestImage src="/images/5/PestLarva.png"/>
+                  <PestImage src="/images/4/PestLarva.png"/>
                 </PestImgContainer>
               </PestImgContainer2>
 
@@ -248,7 +248,7 @@ function PestInformation() {
               </TextBox>
               <PestImgContainer2>
                 <PestImgContainer>
-                  <PestImage src="/images/5/PestAdult.png"/>
+                  <PestImage src="/images/4/PestAdult.png"/>
                 </PestImgContainer>
               </PestImgContainer2>
               

@@ -62,6 +62,7 @@ z-index: 1;
 function Home() {
   const navigate=useNavigate();
   const [selectedCrop, setSelectedCrop] = useState('콩');
+  const [inputData, setInputData] = useState({"location":"충청도","crop":"감귤","date":"2024-06-04"});
 
   const [infoResult, setInfoResult] = useState({
       "selected_crop": selectedCrop,
@@ -97,8 +98,8 @@ function Home() {
         console.log("state 데이터:", result);
 
         setStateData({
-          "percent":infoResult.percentages[bugs[nowData]],
-          "pestName":bugs[nowData]
+          "percent":infoResult.percentages[bugs.at(nowData)],
+          "pestName":bugs.at(nowData)
         })
       } catch (error) {
         console.log("앨범 정보를 가져오는 데 실패했습니다:", error);
@@ -107,11 +108,20 @@ function Home() {
     fetchStateInfo();
   }, [])
 
+  useEffect(() => {
+    setInputData(JSON.parse(localStorage.getItem("inputData")));
+  },[]);
+
+  useEffect(()=>{
+    setSelectedCrop(inputData.crop);
+  },[inputData]);
+
   useEffect(()=>{
     setStateData({
-      "percent":infoResult.percentages[bugs[nowData]],
-      "pestName":bugs[nowData]
+      "percent":infoResult.percentages[bugs.at(nowData)],
+      "pestName":bugs.at(nowData)
     })
+    localStorage.setItem("pestName",bugs.at(nowData));
   }, [nowData])
 
   return (
@@ -119,7 +129,7 @@ function Home() {
       <Header selectedCrop={selectedCrop} setSelectedCrop={setSelectedCrop}/>
       <Container>
         <WormRightTop src={WormRightTopImg}/>  
-        <State selectedCrop={stateData} nowData={nowData} setNowData={setNowData}/> 
+        <State stateData={stateData} nowData={nowData} setNowData={setNowData}/> 
       </Container>
       <Line/>
       <Container>
