@@ -10,6 +10,12 @@ import { BsCaretDownFill } from 'react-icons/bs';
 import { BsCaretUpFill } from 'react-icons/bs';
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io';
 
+const Container=styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 const InputDiv=styled.button`
   display:flex;
@@ -62,17 +68,32 @@ const ToggleDiv=styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
   width: 100%;
+  /* height: 300px; */
+  /* max-height: ${({ isToggled }) => (isToggled ? "300px" : "0px")};
+  overflow: hidden;
+  transition: max-height 0.3s ease-out; */
+  /* transition: height 0.3s ease-out; */
+
+  max-height: ${({ isToggled }) => (isToggled ? "360px" : "0px")};
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
 
   background-color: ${({theme})=>theme.colors.white};
   border-radius:25px;
   box-shadow:0px 3px 5px #0000002f;
 `;
 const ToggleCalendar=styled(Calendar)`
-  border: none;
+  border: none !important;
   outline: none;
   padding: 5% 2% 5% 2%;
   background-color: transparent;
+
+  height: 100%;
+  /* max-height: ${({ isToggled }) => (isToggled ? "100%" : "0%")}; */
+  transition: height 0.3s ease-out;
+  /* transition: max-height 0.3s ease-out; */
 
   .react-calendar__tile--active {
     background-color: transparent;
@@ -221,10 +242,10 @@ const ToggleCalendar=styled(Calendar)`
   }
 `;
 
-function InputDate( {onToggle,
-  onChange,
+function InputDate( {onToggle,onChange,
   // onClick,
-  value
+  value,
+  header
 } ) {
   const [isToggled, setIsToggled]=useState(false);
   const [selectedDate, setSelectedDate]=useState(value);
@@ -245,23 +266,25 @@ function InputDate( {onToggle,
 
   return (
     <>
-      <InputDiv onClick={handleToggle}>
-        날짜 선택
-        <div className='icon'>
-          {isToggled?<BsCaretUpFill className='icon'/>:<BsCaretDownFill className='icon'/>}
-        </div>
-      </InputDiv>
-      {isToggled&&(
-        <ToggleDiv>
-          <ToggleCalendar
-            selected={selectedDate?new Date(selectedDate):null}
-            onChange={handleDateChange}
-            dateFormate='yyyy-MM-dd'
-            formatDay={(locale,date)=>moment(date).format("DD")}
-          />
-        </ToggleDiv>
-      )}
-      {!isToggled&&(<></>)}
+      <Container>
+        <InputDiv onClick={handleToggle}>
+          {header}
+          <div className='icon'>
+            {isToggled?<BsCaretUpFill className='icon'/>:<BsCaretDownFill className='icon'/>}
+          </div>
+        </InputDiv>
+        {isToggled&&(
+          <ToggleDiv isToggled={isToggled}>
+            <ToggleCalendar
+              selected={selectedDate ? new Date(selectedDate) : null}
+              onChange={handleDateChange}
+              dateFormate='yyyy-MM-dd'
+              formatDay={(locale, date) => moment(date).format("DD")}
+            />
+          </ToggleDiv>
+        )}
+        {!isToggled&&(<></>)}
+      </Container>
     </>
   )
 }

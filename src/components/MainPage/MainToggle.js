@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import theme from "../../styles/theme";
 
-import { BsCaretDownFill,BsCaretUpFill,BsGeoFill } from "react-icons/bs";
+import { BsCaretDownFill,BsCaretUpFill } from "react-icons/bs";
 
 
 const Container=styled.div`
@@ -58,11 +58,12 @@ const ToggleArrow=styled.div`
 const Toggle=styled.div`
     display: flex;
     flex-direction: column;
-    text-align: center;
     align-items: center;
 
     width: ${({ theme }) => theme.divSizes.mainInputDivWidth};
-    height: 243px;
+    max-height: ${({ isToggled }) => (isToggled ? "300px" : "0px")};
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
 
     color: ${({ theme }) => theme.colors.darkblue};
     background-color: ${({ theme }) => theme.colors.white};
@@ -82,7 +83,7 @@ const Header=styled.div`
 
     width: 100%;
 
-    margin: 20px 0;
+    margin: 20px 0px 15px 0px;
     padding-left: 20px;
 
     font-size: ${({ theme }) => theme.fontSizes.inputBold};
@@ -112,7 +113,7 @@ const Content=styled.div`
     flex-wrap: wrap;
     gap: 10px;
 
-    margin-top: 15px;
+    padding-bottom: 20px;
 `;
 
 const CropButton=styled.div`
@@ -120,7 +121,7 @@ const CropButton=styled.div`
     align-items: center;
     justify-content: center;
     
-    margin-top: 23px;
+    margin-top: 20px;
 
     width: 100px;
     height: 40px;
@@ -147,18 +148,18 @@ const CropButton=styled.div`
     }
 `;
 
-function MainToggle({onToggle=()=>{},onClick=()=>{},header,elements=[]}){
+function MainToggle({onToggle=()=>{},onClick=()=>{},header,elements=[],icon,toggleHeader}){
     const [isToggled, setIsToggled] = useState(false);
-    const [selectedCrop,setSelectedCrop] = useState(null);
+    const [selectedButton,setSelectedButton] = useState(null);
 
     const handleToggle=()=>{
         setIsToggled((prevState)=>!prevState)
         onToggle(!isToggled); // 토글 상태에 따라 Maindp dkffla
     }
 
-    const handleCrop=(crop)=>{
-        setSelectedCrop(crop);
-        onClick(crop); // 작물 선택 시 부모 컴포넌트에 알림
+    const handleButton=(elem)=>{
+        setSelectedButton(elem);
+        onClick(elem); // 작물 선택 시 부모 컴포넌트에 알림
     }
 
     return(
@@ -170,24 +171,24 @@ function MainToggle({onToggle=()=>{},onClick=()=>{},header,elements=[]}){
                         {isToggled?<BsCaretUpFill size={24}/>:<BsCaretDownFill size={24}/>}
                     </ToggleArrow>
                 </ButtonElement>
-                {isToggled && (
-                    <Toggle>
-                        <Header>
-                            <BsGeoFill className="icon" size={22}/>
-                            <span>{header}</span>
-                        </Header>
-                        <Line />
-                        <Content>
-                            {elements.map((elem)=>(
-                                <CropButton
-                                    key={elem}
-                                    onClick={()=>handleCrop(elem)}
-                                    className={selectedCrop===elem?'active':''}
-                                >{elem}</CropButton>
-                            ))}
-                        </Content>
-                    </Toggle>
-                )}
+                <Toggle isToggled={isToggled}>
+                    <Header>
+                        {icon}
+                        <span>{toggleHeader}</span>
+                    </Header>
+                    <Line />
+                    <Content>
+                        {elements.map((elem) => (
+                            <CropButton
+                                key={elem}
+                                onClick={() => handleButton(elem)}
+                                className={selectedButton === elem ? "active" : ""}
+                            >
+                                {elem}
+                            </CropButton>
+                        ))}
+                    </Content>
+                </Toggle>
             </Container>
         </>
     )
