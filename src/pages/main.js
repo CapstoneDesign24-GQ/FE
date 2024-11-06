@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import InputLocation from '../components/MainPage/InputLocation';
-import InputCrop from '../components/MainPage/InputCrop';
+import MainToggle from '../components/MainPage/MainToggle';
+import { Locations } from '../assets/constants/Locations';
+import { Crops } from '../assets/constants/Crops';
 import InputDate from '../components/MainPage/InputDate';
 
 import LogoImg from '../assets/images/LogoImg.png';
@@ -131,17 +132,21 @@ const Main = () => {
       <Title2>G Q</Title2>
       <Components>
         <ComponentsContainer>
-          <InputLocation
-            onClick={handleLocationButton}
+          <MainToggle 
             value={inputData.location}
-            onToggle={handleToggle} // onToggle 함수 추가
+            onClick={handleLocationButton}
+            onToggle={handleToggle}
+            header={Locations.header}
+            elements={Locations.elements}
           />
         </ComponentsContainer>
         <ComponentsContainer>
-          <InputCrop
-            onClick={handleCropButton}
+          <MainToggle 
             value={inputData.crop}
-            onToggle={handleToggle} // onToggle 함수 추가
+            onClick={handleCropButton}
+            onToggle={handleToggle}
+            header={Crops.header}
+            elements={Crops.elements}
           />
         </ComponentsContainer>
         <ComponentsContainer>
