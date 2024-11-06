@@ -136,8 +136,10 @@ const Main = () => {
             value={inputData.location}
             onClick={handleLocationButton}
             onToggle={handleToggle}
-            header={Locations.header}
+            header={inputData.location || Locations.header}
             elements={Locations.elements}
+            icon={Locations.icon}
+            toggleHeader={Locations.toggleHeader}
           />
         </ComponentsContainer>
         <ComponentsContainer>
@@ -145,8 +147,10 @@ const Main = () => {
             value={inputData.crop}
             onClick={handleCropButton}
             onToggle={handleToggle}
-            header={Crops.header}
+            header={inputData.crop || Crops.header}
             elements={Crops.elements}
+            icon={Crops.icon}
+            toggleHeader={Crops.toggleHeader}
           />
         </ComponentsContainer>
         <ComponentsContainer>
