@@ -150,16 +150,16 @@ const CropButton=styled.div`
 
 function MainToggle({onToggle=()=>{},onClick=()=>{},header,elements=[],icon,toggleHeader}){
     const [isToggled, setIsToggled] = useState(false);
-    const [selectedCrop,setSelectedCrop] = useState(null);
+    const [selectedButton,setSelectedButton] = useState(null);
 
     const handleToggle=()=>{
         setIsToggled((prevState)=>!prevState)
         onToggle(!isToggled); // 토글 상태에 따라 Maindp dkffla
     }
 
-    const handleCrop=(crop)=>{
-        setSelectedCrop(crop);
-        onClick(crop); // 작물 선택 시 부모 컴포넌트에 알림
+    const handleButton=(elem)=>{
+        setSelectedButton(elem);
+        onClick(elem); // 작물 선택 시 부모 컴포넌트에 알림
     }
 
     return(
@@ -181,8 +181,8 @@ function MainToggle({onToggle=()=>{},onClick=()=>{},header,elements=[],icon,togg
                         {elements.map((elem) => (
                             <CropButton
                                 key={elem}
-                                onClick={() => handleCrop(elem)}
-                                className={selectedCrop === elem ? "active" : ""}
+                                onClick={() => handleButton(elem)}
+                                className={selectedButton === elem ? "active" : ""}
                             >
                                 {elem}
                             </CropButton>

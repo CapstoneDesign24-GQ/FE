@@ -158,6 +158,7 @@ const Main = () => {
             value={inputData.date}
             onChange={handleDateButton}
             onToggle={handleToggle} // onToggle 함수 추가
+            header={inputData.date || '날짜 선택'}
           />
         </ComponentsContainer>
       </Components>
